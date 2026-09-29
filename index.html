@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Café Typing ☕</title>
+
+<style>
+    :root {
+        --coffee-dark: #4b3025;
+        --coffee: #765542;
+        --coffee-light: #b9987e;
+        --cream: #f8f1e7;
+        --cream-2: #fffaf3;
+        --brown-soft: #dbc6b3;
+        --text: #3b2a23;
+        --green: #6c8c68;
+        --red: #b9675b;
+        --gold: #c79b57;
+        --white: #ffffff;
+        --shadow: 0 15px 45px rgba(82, 55, 42, 0.12);
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        min-height: 100vh;
+        font-family: "Prompt", "Noto Sans Thai", "Segoe UI", sans-serif;
+        color: var(--text);
+
+        background:
+            radial-gradient(circle at 15% 10%, rgba(255,255,255,.7) 0 35px, transparent 36px),
+            radial-gradient(circle at 85% 20%, rgba(255,255,255,.45) 0 25px, transparent 26px),
+            linear-gradient(135deg, #efe0d0, #f8f1e7 45%, #ead7c4);
+
+        overflow-x: hidden;
+    }
+
+    button,
+    select,
+    textarea {
+        font: inherit;
+    }
+
+    /* ===== Decorative Café ===== */
+
+    .steam {
+        position: fixed;
+        font-size: 70px;
+        opacity: .08;
+        pointer-events: none;
+        animation: floatSteam 7s ease-in-out infinite;
+    }
+
+    .steam.one {
+        left: 4%;
+        top: 16%;
+    }
+
+    .steam.two {
+        right: 5%;
+        bottom: 18%;
+        animation-delay: 2s;
+    }
+
+    @keyframes floatSteam {
+        0%, 100% {
+            transform: translateY(0) rotate(-4deg);
+        }
+        50% {
+            transform: translateY(-18px) rotate(4deg);
+        }
+    }
+
+    /* ===== Main Container ===== */
+
+    .app {
+        width: min(1180px, 94%);
+        margin: 35px auto;
+    }
+
+    .cafe-card {
+        background: rgba(255,250,243,.88);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255,255,255,.8);
+        border-radius: 30px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    /* ===== Header ===== */
+
+    header {
+        padding: 30px 35px 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+
+        border-bottom: 1px solid rgba(75,48,37,.08);
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .logo {
+        width: 58px;
+        height: 58px;
+        border-radius: 20px;
+
+        display: grid;
+        place-items: center;
+
+        background: linear-gradient(145deg, #8d654f, #56382b);
+        color: white;
+        font-size: 29px;
+
+        box-shadow: 0 8px 20px rgba(76,46,34,.2);
+    }
+
+    .brand h1 {
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .brand p {
+        margin-top: 4px;
+        font-size: 13px;
+        opacity: .65;
+    }
+
+    .live-badge {
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: #f0e4d4;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    /* ===== Control Section ===== */
+
+    .controls {
+        padding: 22px 35px;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr auto;
+        gap: 14px;
+        align-items: end;
+    }
+
+    .control-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 7px;
+        opacity: .7;
+    }
+
+    select,
+    .select-like {
+        width: 100%;
+        border: 1px solid var(--brown-soft);
+        background: var(--white);
+        color: var(--text);
+
+        border-radius: 14px;
+        padding: 11px 13px;
+        outline: none;
+
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    select:focus {
+        border-color: var(--coffee);
+        box-shadow: 0 0 0 4px rgba(118,85,66,.09);
+    }
+
+    .buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn {
+        border: none;
+        border-radius: 14px;
+        padding: 12px 15px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: .2s;
+        white-space: nowrap;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: var(--coffee-dark);
+        color: white;
+    }
+
+    .btn-secondary {
+        background: #eee0d1;
+        color: var(--coffee-dark);
+    }
+
+    /* ===== Level Pills ===== */
+
+    .level-wrap {
+        padding: 0 35px 22px;
+    }
+
+    .level-title {
+        font-size: 12px;
+        font-weight: 700;
+        opacity: .65;
+        margin-bottom: 10px;
+    }
+
+    .levels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .level-btn {
+        border: 1px solid #dcc7b3;
+        background: #fffaf5;
+        color: var(--coffee-dark);
+
+        border-radius: 999px;
+        padding: 9px 14px;
+
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: .2s;
+    }
+
+    .level-btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .level-btn.active {
+        color: white;
+        background: var(--coffee);
+        border-color: var(--coffee);
+        box-shadow: 0 7px 18px rgba(118,85,66,.2);
+    }
+
+    .level-btn.hell.active {
+        background: linear-gradient(135deg, #8f2f26, #c16d3b);
+        border-color: #8f2f26;
+    }
+
+    /* ===== Practice Area ===== */
+
+    .practice {
+        margin: 0 35px 35px;
+        padding: 30px;
+
+        background: var(--white);
+        border: 1px solid rgba(75,48,37,.08);
+        border-radius: 25px;
+    }
+
+    .practice-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 0 5px rgba(199,155,87,.12);
+    }
+
+    .dot.running {
+        background: #6c9860;
+        animation: pulse .9s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.5);
+            opacity: .5;
+        }
+    }
+
+    .status-text {
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .voice-status {
+        font-size: 11px;
+        opacity: .55;
+    }
+
+    /* ===== Sentence ===== */
+
+    .sentence-box {
+        background: #fbf6ef;
+        border-radius: 20px;
+        padding: 28px;
+
+        min-height: 160px;
+
+        border: 1px solid #eadbca;
+    }
+
+    .sentence-label {
+        font-size: 12px;
+        font-weight: 700;
+        opacity: .55;
+        margin-bottom: 14px;
+    }
+
+    #sentence {
+        font-family: "Consolas", "Menlo", monospace;
+        font-size: clamp(20px, 2.4vw, 30px);
+        line-height: 1.8;
+
+        word-break: break-word;
+        white-space: pre-wrap;
+    }
+
+    #sentence span {
+        position: relative;
+        transition: .1s;
+    }
+
+    #sentence span.correct {
+        color: var(--green);
+    }
+
+    #sentence span.incorrect {
+        color: var(--red);
+        background: rgba(185,103,91,.12);
+        border-radius: 3px;
+    }
+
+    #sentence span.current {
+        border-bottom: 3px solid var(--coffee);
+        animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+        50% {
+            border-color: transparent;
+        }
+    }
+
+    /* ===== On-screen Keyboard ===== */
+
+    .keyboard-panel {
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid #eadbca;
+        border-radius: 18px;
+        background: #f7f0e8;
+    }
+
+    .keyboard-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .keyboard-heading strong {
+        font-size: 13px;
+    }
+
+    .keyboard-hint {
+        font-size: 11px;
+        opacity: .65;
+        text-align: right;
+    }
+
+    .keyboard {
+        display: grid;
+        gap: 6px;
+        max-width: 760px;
+        margin: 0 auto;
+    }
+
+    .keyboard-row {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+
+    .key {
+        flex: 1 1 0;
+        min-width: 0;
+        height: 48px;
+        padding: 5px 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid #d8c7b5;
+        border-bottom-width: 3px;
+        border-radius: 7px;
+        background: #fffdfa;
+        color: var(--text);
+        transition: background .15s, color .15s, transform .15s;
+    }
+
+    .key-en,
+    .key-th {
+        overflow: hidden;
+        white-space: nowrap;
+        line-height: 1;
+    }
+
+    .key-en {
+        align-self: flex-start;
+        font-size: 9px;
+        opacity: .55;
+    }
+
+    .key-th {
+        align-self: flex-end;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .key.wide {
+        flex-grow: 1.55;
+    }
+
+    .key.extra-wide {
+        flex-grow: 2.1;
+    }
+
+    .key.spacebar {
+        flex-grow: 6;
+    }
+
+    .key.active {
+        transform: translateY(-2px);
+        border-color: var(--coffee-dark);
+        background: #d8a85e;
+        color: #2e2019;
+        box-shadow: 0 4px 0 rgba(75,48,37,.16);
+    }
+
+    .key.active .key-en {
+        opacity: .8;
+    }
+
+    .key.modifier-active {
+        background: #b8c99d;
+        border-color: #71845b;
+    }
+
+    /* ===== Input ===== */
+
+    .input-area {
+        margin-top: 20px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 115px;
+        resize: vertical;
+
+        border: 2px solid #dfcbb8;
+        border-radius: 18px;
+        padding: 18px;
+
+        background: white;
+        color: var(--text);
+
+        outline: none;
+
+        font-family: "Consolas", "Menlo", monospace;
+        font-size: 18px;
+        line-height: 1.7;
+
+        transition: .2s;
+    }
+
+    textarea:focus {
+        border-color: var(--coffee);
+        box-shadow: 0 0 0 5px rgba(118,85,66,.08);
+    }
+
+    textarea:disabled {
+        background: #f3eee8;
+        cursor: not-allowed;
+    }
+
+    .input-hint {
+        margin-top: 8px;
+        font-size: 11px;
+        opacity: .55;
+    }
+
+    /* ===== Stats ===== */
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(5,1fr);
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .stat {
+        padding: 16px;
+        background: #fbf7f2;
+        border: 1px solid #eadfd4;
+        border-radius: 17px;
+        text-align: center;
+    }
+
+    .stat .value {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--coffee-dark);
+    }
+
+    .stat .label {
+        margin-top: 4px;
+        font-size: 10px;
+        opacity: .55;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* ===== Bottom ===== */
+
+    .bottom-grid {
+        display: grid;
+        grid-template-columns: 1.4fr 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .info-box {
+        padding: 20px;
+        border-radius: 18px;
+        background: #f8efe3;
+    }
+
+    .info-box h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .info-box p {
+        font-size: 12px;
+        line-height: 1.7;
+        opacity: .7;
+    }
+
+    .best {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+
+    .best strong {
+        color: var(--coffee-dark);
+    }
+
+    /* ===== Completed Overlay ===== */
+
+    .result-box {
+        display: none;
+        margin-top: 20px;
+
+        padding: 24px;
+        border-radius: 20px;
+
+        background: linear-gradient(135deg, #fff8ed, #f3e6d5);
+
+        text-align: center;
+        animation: pop .35s ease;
+    }
+
+    .result-box.show {
+        display: block;
+    }
+
+    @keyframes pop {
+        from {
+            opacity: 0;
+            transform: scale(.96);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .result-title {
+        font-size: 23px;
+        font-weight: 800;
+    }
+
+    .result-message {
+        margin-top: 7px;
+        font-size: 13px;
+        opacity: .65;
+    }
+
+    .result-number {
+        margin-top: 12px;
+        font-size: 38px;
+        font-weight: 900;
+        color: var(--coffee);
+    }
+
+    /* ===== Footer ===== */
+
+    footer {
+        text-align: center;
+        padding: 0 20px 30px;
+        font-size: 11px;
+        opacity: .5;
+    }
+
+    /* ===== Responsive ===== */
+
+    @media (max-width: 850px) {
+        .controls {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .buttons {
+            grid-column: span 2;
+        }
+
+        .stats {
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        .bottom-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .app {
+            width: 100%;
+            margin: 0;
+        }
+
+        .cafe-card {
+            border-radius: 0;
+        }
+
+        header {
+            padding: 22px 18px;
+        }
+
+        .controls,
+        .level-wrap {
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .practice {
+            margin-left: 12px;
+            margin-right: 12px;
+            padding: 18px;
+        }
+
+        .stats {
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .practice-top {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .sentence-box {
+            padding: 20px;
+        }
+
+        .keyboard-panel {
+            padding: 12px 8px;
+        }
+
+        .keyboard-row {
+            gap: 3px;
+        }
+
+        .key {
+            height: 40px;
+            padding: 4px 2px;
+        }
+
+        .key-en {
+            font-size: 7px;
+        }
+
+        .key-th {
+            font-size: 10px;
+        }
+
+        .keyboard-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .keyboard-hint {
+            text-align: left;
+        }
+
+        #sentence {
+            font-size: 18px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="steam one">☁️</div>
+<div class="steam two">☁️</div>
+
+<div class="app">
+
+<div class="cafe-card">
+
+<!-- HEADER -->
+<header>
+
+    <div class="brand">
+        <div class="logo">☕</div>
+
+        <div>
+            <h1>Café Typing</h1>
+            <p>ฝึกพิมพ์ให้ไวเหมือนบาริสต้าชงกาแฟ ⚡</p>
+        </div>
+    </div>
+
+    <div class="live-badge">
+        ● Practice Mode
+    </div>
+
+</header>
+
+
+<!-- CONTROLS -->
+<section class="controls">
+
+    <div class="control-group">
+        <label>ภาษา / LANGUAGE</label>
+
+        <select id="language">
+            <option value="th">🇹🇭 ภาษาไทย</option>
+            <option value="en">🇬🇧 English</option>
+        </select>
+    </div>
+
+
+    <div class="control-group">
+        <label>ระดับ / LEVEL</label>
+
+        <select id="levelSelect">
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="expert">Expert</option>
+            <option value="nightmare">Nightmare</option>
+            <option value="hell">🔥 HELL</option>
+        </select>
+    </div>
+
+
+    <div class="control-group">
+        <label>ระบบเสียง</label>
+
+        <div class="select-like" id="voiceName">
+            🔊 Siri-style System Voice
+        </div>
+    </div>
+
+
+    <div class="buttons">
+
+        <button class="btn btn-secondary" id="speakBtn">
+            🔊 ฟัง
+        </button>
+
+        <button class="btn btn-primary" id="newBtn">
+            🎲 สุ่ม
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- LEVEL BUTTONS -->
+<section class="level-wrap">
+
+    <div class="level-title">
+        เลือกระดับความยาก
+    </div>
+
+    <div class="levels">
+
+        <button class="level-btn active" data-level="easy">
+            ☕ Easy
+        </button>
+
+        <button class="level-btn" data-level="medium">
+            🥐 Medium
+        </button>
+
+        <button class="level-btn" data-level="hard">
+            🍰 Hard
+        </button>
+
+        <button class="level-btn" data-level="expert">
+            ☕ Expert
+        </button>
+
+        <button class="level-btn" data-level="nightmare">
+            🌙 Nightmare
+        </button>
+
+        <button class="level-btn hell" data-level="hell">
+            🔥 HELL
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- PRACTICE -->
+<section class="practice">
+
+    <div class="practice-top">
+
+        <div class="status">
+
+            <div class="dot" id="statusDot"></div>
+
+            <div>
+                <div class="status-text" id="statusText">
+                    พร้อมเริ่มฝึก
+                </div>
+
+                <div class="voice-status" id="voiceStatus">
+                    กด 🔊 เพื่อฟังประโยค
+                </div>
+            </div>
+
+        </div>
+
+
+        <div>
+            <button class="btn btn-secondary" id="repeatBtn">
+                🔁 ฟังซ้ำ
+            </button>
+        </div>
+
+    </div>
+
+
+    <!-- Sentence -->
+    <div class="sentence-box">
+
+        <div class="sentence-label">
+            TYPE THIS SENTENCE
+        </div>
+
+        <div id="sentence"></div>
+
+    </div>
+
+    <div class="keyboard-panel">
+        <div class="keyboard-heading">
+            <strong>แป้นพิมพ์</strong>
+            <div class="keyboard-hint" id="keyboardHint" aria-live="polite"></div>
+        </div>
+        <div class="keyboard" id="keyboard" aria-hidden="true"></div>
+    </div>
+
+
+    <!-- INPUT -->
+    <div class="input-area">
+
+        <textarea
+            id="typingInput"
+            spellcheck="false"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="เริ่มพิมพ์ตรงนี้..."
+        ></textarea>
+
+        <div class="input-hint">
+            💡 เวลาเริ่มนับทันทีเมื่อคุณกดแป้นพิมพ์
+        </div>
+
+    </div>
+
+
+    <!-- STATS -->
+    <div class="stats">
+
+        <div class="stat">
+            <div class="value" id="wpm">0</div>
+            <div class="label">WPM</div>
+        </div>
+
+        <div class="stat">
+            <div class="value" id="accuracy">100%</div>
+            <div class="label">Accuracy</div>
+        </div>
+
+        <div class="stat">
+            <div class="value" id="errors">0</div>
+            <div class="label">Errors</div>
+        </div>
+
+        <div class="stat">
+            <div class="value" id="timer">0.0</div>
+            <div class="label">Seconds</div>
+        </div>
+
+        <div class="stat">
+            <div class="value" id="chars">0</div>
+            <div class="label">Chars</div>
+        </div>
+
+    </div>
+
+
+    <!-- RESULT -->
+    <div class="result-box" id="resultBox">
+
+        <div class="result-title">
+            🎉 Finished!
+        </div>
+
+        <div class="result-message" id="resultMessage">
+            Great job!
+        </div>
+
+        <div class="result-number">
+            <span id="resultWpm">0</span> WPM
+        </div>
+
+        <button class="btn btn-primary" id="nextBtn">
+            🎲 ประโยคต่อไป
+        </button>
+
+    </div>
+
+
+    <!-- INFO -->
+    <div class="bottom-grid">
+
+        <div class="info-box">
+
+            <h3>☕ Café Tip</h3>
+
+            <p>
+                พยายามมองประโยคล่วงหน้า อย่าพิมพ์แบบกดทีละตัว
+                และอย่าหยุดเมื่อเจอคำที่ยาก เพราะระดับ HELL
+                จะตั้งใจใส่ประโยคที่ยาวและมีเครื่องหมายวรรคตอนหลายรูปแบบ
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <h3>🏆 Personal Best</h3>
+
+            <div class="best">
+                <span>Best WPM</span>
+                <strong id="bestWpm">0</strong>
+            </div>
+
+            <div class="best">
+                <span>Best Accuracy</span>
+                <strong id="bestAccuracy">0%</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+    Made for typing practice ☕ · Café Typing
+</footer>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ======================================================
+   SENTENCE DATABASE
+====================================================== */
+
+const sentences = {
+
+    th: {
+
+        easy: [
+            "ฉันชอบดื่มกาแฟ",
+            "วันนี้อากาศดีมาก",
+            "แมวนอนอยู่บนโต๊ะ",
+            "ฉันกำลังฝึกพิมพ์",
+            "กาแฟแก้วนี้หอมมาก",
+            "ตอนเช้าฉันชอบอ่านหนังสือ",
+            "ร้านนี้เปิดตอนแปดโมง",
+            "วันนี้ฉันรู้สึกมีความสุข",
+            "ฉันชอบนั่งทำงานในร้านกาแฟ"
+        ],
+
+        medium: [
+            "ฉันกำลังฝึกพิมพ์ให้เร็วขึ้นทุกวัน",
+            "การฝึกพิมพ์อย่างสม่ำเสมอช่วยให้เราทำงานได้เร็วขึ้น",
+            "ร้านกาแฟแห่งนี้มีเพลงเบา ๆ เปิดตลอดทั้งวัน",
+            "บางครั้งการเริ่มต้นทำงานเป็นเรื่องที่ยากที่สุด",
+            "ฉันชอบนั่งริมหน้าต่างและมองผู้คนเดินผ่านไปมา",
+            "เมื่อมีเวลาว่างฉันมักจะเปิดคอมพิวเตอร์แล้วฝึกพิมพ์"
+        ],
+
+        hard: [
+            "การพิมพ์ที่ดีไม่ได้หมายถึงการพิมพ์ให้เร็วเพียงอย่างเดียว แต่ต้องพิมพ์ได้อย่างถูกต้องและสม่ำเสมอด้วย",
+            "ในวันที่รู้สึกไม่มีแรงจูงใจ ฉันจะเริ่มต้นด้วยงานเล็ก ๆ ก่อน แล้วค่อย ๆ เพิ่มความยากขึ้น",
+            "การทำงานในร้านกาแฟทำให้ฉันรู้สึกผ่อนคลาย เพราะเสียงพูดคุยและเสียงเครื่องชงกาแฟช่วยสร้างบรรยากาศที่ดี",
+            "ถ้าเราฝึกฝนอย่างต่อเนื่อง ความเร็วในการพิมพ์จะเพิ่มขึ้นเองโดยไม่จำเป็นต้องพยายามกดแป้นพิมพ์ให้เร็วเกินไป"
+        ],
+
+        expert: [
+            "นักออกแบบที่ดีไม่ได้คิดเพียงว่างานจะต้องสวย แต่ต้องคิดด้วยว่าผู้ใช้จะมองเห็น เข้าใจ และใช้งานมันอย่างไรในสถานการณ์จริง",
+            "เมื่อโปรเจกต์มีปัญหา สิ่งที่สำคัญไม่ใช่การหาคนผิด แต่คือการค้นหาสาเหตุของปัญหาและออกแบบวิธีแก้ไขที่สามารถนำไปใช้ได้จริง",
+            "บางครั้งไอเดียที่ดูแปลกที่สุดในตอนแรกอาจกลายเป็นแนวคิดที่น่าสนใจที่สุด หากเราเปิดโอกาสให้ตัวเองทดลองและยอมรับความผิดพลาด",
+            "การฝึกพิมพ์สามารถช่วยให้เรามีสมาธิมากขึ้น เพราะสมองต้องประสานงานระหว่างการอ่าน การจำตำแหน่งตัวอักษร และการควบคุมนิ้วมือไปพร้อมกัน"
+        ],
+
+        nightmare: [
+            "เมื่อเวลาผ่านไปหลายชั่วโมงในร้านกาแฟเล็ก ๆ แห่งหนึ่ง ฉันเริ่มสังเกตว่าทุกคนรอบตัวกำลังทำบางอย่างอย่างตั้งใจ ไม่มีใครพูดเสียงดัง ไม่มีใครรีบร้อน และเสียงแป้นพิมพ์ที่ดังเบา ๆ กลับกลายเป็นเสียงประกอบที่ทำให้ฉันจดจ่อกับงานได้มากขึ้น",
+            "การพัฒนาทักษะใดก็ตามไม่ได้เกิดขึ้นเพราะเราทำสิ่งเดิมซ้ำ ๆ เพียงอย่างเดียว แต่เกิดจากการที่เรารู้ว่าตัวเองผิดตรงไหน กล้ายอมรับข้อผิดพลาด และพยายามเปลี่ยนวิธีการฝึกให้เหมาะสมกับตัวเองมากขึ้นในแต่ละวัน",
+            "บางครั้งฉันคิดว่าการทำงานให้เสร็จอย่างรวดเร็วอาจไม่ใช่เป้าหมายที่สำคัญที่สุด เพราะสิ่งที่สำคัญกว่าคือการสร้างผลงานที่เราสามารถอธิบายได้ว่าเหตุใดเราจึงเลือกวิธีนั้น และผลลัพธ์ที่เกิดขึ้นตอบโจทย์ผู้ใช้งานจริงหรือไม่",
+        ],
+
+        hell: [
+            "ในคืนวันศุกร์ที่ฝนตกหนัก ฉันนั่งอยู่คนเดียวในร้านกาแฟเก่าแก่ซึ่งกำลังจะปิดกิจการในเดือนหน้า ข้างตัวมีเพียงโน้ตบุ๊กหนึ่งเครื่อง กาแฟเย็นที่ละลายจนจืด และกระดาษแผ่นหนึ่งที่เขียนประโยคประหลาดเอาไว้ว่า หากคุณยังอ่านมาถึงตรงนี้ แปลว่าคุณพร้อมที่จะพิสูจน์แล้วว่าความอดทนของคุณมีมากกว่าความอยากจะกดปุ่มสุ่มประโยคใหม่เพียงใด",
+            "สมมติว่าคุณกำลังทำงานอยู่ตอนตีสามสิบเจ็ดนาที ฝนข้างนอกยังตกอย่างต่อเนื่อง ไฟในห้องสว่างเพียงครึ่งเดียว โทรศัพท์ไม่มีสัญญาณอินเทอร์เน็ต กาแฟแก้วโปรดหมดไปแล้ว และโปรแกรมที่คุณกำลังใช้เกิดค้างขึ้นมาโดยไม่ทราบสาเหตุ สิ่งเดียวที่คุณทำได้คือหายใจเข้าลึก ๆ ตั้งสติ แล้วค่อย ๆ พิมพ์ประโยคนี้จนจบโดยพยายามอย่ากด Backspace แม้แต่ครั้งเดียว",
+            "ทักษะการพิมพ์ที่แท้จริงไม่ได้วัดจากความเร็วในช่วงเวลาที่ทุกอย่างเป็นใจ แต่มันวัดจากความสามารถในการรักษาความถูกต้องเมื่อเจอคำยาว ๆ เครื่องหมายวรรคตอน ตัวเลข ช่องว่าง คำที่อ่านยาก และประโยคที่ดูเหมือนไม่มีวันจบ ดังนั้นหากคุณกำลังอ่านข้อความนี้อยู่ ขอให้จำไว้ว่าคุณไม่ได้กำลังแข่งขันกับใครเลย คุณกำลังแข่งขันกับตัวเองเมื่อห้านาทีก่อนเท่านั้น",
+            "ลองจินตนาการว่าร้านกาแฟแห่งหนึ่งเปิดทำการตลอดยี่สิบสี่ชั่วโมง และมีเครื่องพิมพ์ดีดเก่า ๆ ตั้งอยู่บนโต๊ะริมหน้าต่าง ทุกครั้งที่ใครพิมพ์ผิด เครื่องจะพิมพ์ตัวอักษรเพิ่มขึ้นหนึ่งตัวโดยอัตโนมัติ และเมื่อประโยคยาวถึงหนึ่งพันตัวอักษร ไฟทั้งร้านจะดับลงทันที ไม่มีใครรู้ว่ากฎนี้เริ่มต้นขึ้นเมื่อไร แต่สิ่งหนึ่งที่ทุกคนรู้คือคนที่สามารถพิมพ์ประโยคนี้จนจบได้โดยไม่ยอมแพ้ จะได้รับกาแฟฟรีหนึ่งปีเต็มพร้อมสิทธิ์ในการเลือกเพลงเปิดร้านทุกเช้า"
+        ]
+    },
+
+
+    en: {
+
+        easy: [
+            "I like coffee.",
+            "The weather is nice today.",
+            "I am practicing typing.",
+            "The cat is sleeping.",
+            "This coffee smells great.",
+            "I like working in a cafe.",
+            "Today is a good day.",
+            "The cafe opens at eight.",
+            "I enjoy reading books."
+        ],
+
+        medium: [
+            "I am practicing my typing speed every day.",
+            "Consistent practice helps us work faster and more accurately.",
+            "This cafe plays soft music throughout the day.",
+            "Sometimes starting a task is the hardest part.",
+            "I like sitting near the window and watching people walk by.",
+            "When I have free time, I usually open my computer and practice typing."
+        ],
+
+        hard: [
+            "Good typing is not only about speed; it is also about accuracy, rhythm, and consistency.",
+            "When I feel unmotivated, I start with a small task and slowly increase the difficulty.",
+            "Working in a quiet cafe helps me concentrate because the background noise feels calm and natural.",
+            "The faster you type, the more important accuracy becomes, especially when working on long documents.",
+            "Learning a new skill takes patience because progress is usually much slower before it suddenly becomes easier."
+        ],
+
+        expert: [
+            "A good designer does not only think about whether a project looks beautiful; they also think about how users will understand and interact with it in real situations.",
+            "When a project has a problem, the most useful approach is not to find someone to blame, but to understand the cause and design a solution that can actually be implemented.",
+            "Sometimes the strangest idea can become the most interesting one when we give ourselves permission to experiment, fail, learn, and try again.",
+            "Typing practice can improve concentration because the brain must coordinate reading, memory, visual recognition, and precise finger movement at the same time.",
+            "Creative work often looks simple from the outside, yet behind a simple result there may be dozens of small decisions involving structure, typography, spacing, timing, and user experience."
+        ],
+
+        nightmare: [
+            "After several hours inside a small neighborhood cafe, I began to notice that everyone around me was working quietly, each person focused on a completely different task, while the gentle sound of keyboards and coffee machines somehow created a rhythm that made it easier to concentrate.",
+            "Improving any skill does not happen simply because we repeat the same exercise forever; progress happens when we understand our mistakes, recognize weak points, adjust our strategy, and continue practicing even when the results are not immediately visible.",
+            "Sometimes finishing a task quickly is not the most important goal, because the more important question is whether the final result solves the actual problem, communicates the intended idea clearly, and can be explained without relying on excuses.",
+            "A person who types quickly but constantly makes mistakes may spend more time correcting their work than someone who types slightly slower but maintains a steady rhythm and higher accuracy."
+        ],
+
+        hell: [
+            "Imagine that you are sitting alone in a tiny cafe at 3:37 AM while heavy rain is falling outside, your phone has no internet connection, your favorite coffee has already gone cold, the lights are flickering above your head, and the only thing keeping you awake is a long paragraph on the screen that seems determined to continue forever until you finish typing every single character correctly.",
+            "Suppose you are working on an important project during the final hour before a deadline, when suddenly the application freezes, the internet disconnects, your backup file refuses to open, and the client sends another message asking for one last tiny change; instead of panicking, you take a deep breath, focus on one sentence at a time, and continue typing carefully until the entire paragraph is finally complete.",
+            "True typing ability is not measured only by how fast you can type when everything goes perfectly; it is measured by how accurately you can continue when the sentence becomes unusually long, punctuation appears unexpectedly, numbers are mixed with words, spaces become important, and your brain starts telling you that pressing the random button would probably be much easier than finishing what you started.",
+            "Imagine a mysterious cafe that never closes, where an old typewriter sits beside a window and adds one extra character every time you make a mistake; nobody knows who built the machine, nobody understands why the rule exists, and nobody has ever managed to reach the end of the longest sentence, but tonight you have decided that instead of leaving the table, you are going to keep typing until the final period appears on the screen."
+        ]
+    }
+
+};
+
+
+/* ======================================================
+   ELEMENTS
+====================================================== */
+
+const languageSelect = document.getElementById("language");
+const levelSelect = document.getElementById("levelSelect");
+
+const sentenceEl = document.getElementById("sentence");
+const inputEl = document.getElementById("typingInput");
+const keyboardEl = document.getElementById("keyboard");
+const keyboardHintEl = document.getElementById("keyboardHint");
+
+const speakBtn = document.getElementById("speakBtn");
+const repeatBtn = document.getElementById("repeatBtn");
+const newBtn = document.getElementById("newBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+const statusText = document.getElementById("statusText");
+const statusDot = document.getElementById("statusDot");
+const voiceStatus = document.getElementById("voiceStatus");
+
+const wpmEl = document.getElementById("wpm");
+const accuracyEl = document.getElementById("accuracy");
+const errorsEl = document.getElementById("errors");
+const timerEl = document.getElementById("timer");
+const charsEl = document.getElementById("chars");
+
+const resultBox = document.getElementById("resultBox");
+const resultWpm = document.getElementById("resultWpm");
+const resultMessage = document.getElementById("resultMessage");
+
+const bestWpmEl = document.getElementById("bestWpm");
+const bestAccuracyEl = document.getElementById("bestAccuracy");
+const voiceNameEl = document.getElementById("voiceName");
+
+
+/* ======================================================
+   STATE
+====================================================== */
+
+let currentSentence = "";
+let currentLanguage = "th";
+let currentLevel = "easy";
+
+let startTime = null;
+let timerInterval = null;
+let completed = false;
+
+let totalTyped = 0;
+let totalCorrect = 0;
+let totalErrors = 0;
+
+let voices = [];
+
+const keyboardRows = [
+    [
+        { en: "`", enShift: "~", th: "็", thShift: "ํ" },
+        { en: "1", enShift: "!", th: "ๅ", thShift: "+" },
+        { en: "2", enShift: "@", th: "/", thShift: "๑" },
+        { en: "3", enShift: "#", th: "-", thShift: "๒" },
+        { en: "4", enShift: "$", th: "ภ", thShift: "๓" },
+        { en: "5", enShift: "%", th: "ถ", thShift: "๔" },
+        { en: "6", enShift: "^", th: "ุ", thShift: "ู" },
+        { en: "7", enShift: "&", th: "ึ", thShift: "฿" },
+        { en: "8", enShift: "*", th: "ค", thShift: "๕" },
+        { en: "9", enShift: "(", th: "ต", thShift: "๖" },
+        { en: "0", enShift: ")", th: "จ", thShift: "๗" },
+        { en: "-", enShift: "_", th: "ข", thShift: "๘" },
+        { en: "=", enShift: "+", th: "ช", thShift: "๙" },
+        { en: "Backspace", enShift: "", th: "ลบ", thShift: "", wide: true }
+    ],
+    [
+        { en: "Tab", enShift: "", th: "แท็บ", thShift: "", wide: true },
+        { en: "q", enShift: "Q", th: "ๆ", thShift: "๐" },
+        { en: "w", enShift: "W", th: "ไ", thShift: "\"" },
+        { en: "e", enShift: "E", th: "ำ", thShift: "ฎ" },
+        { en: "r", enShift: "R", th: "พ", thShift: "ฑ" },
+        { en: "t", enShift: "T", th: "ะ", thShift: "ธ" },
+        { en: "y", enShift: "Y", th: "ั", thShift: "ํ" },
+        { en: "u", enShift: "U", th: "ี", thShift: "๊" },
+        { en: "i", enShift: "I", th: "ร", thShift: "ณ" },
+        { en: "o", enShift: "O", th: "น", thShift: "ฯ" },
+        { en: "p", enShift: "P", th: "ย", thShift: "ญ" },
+        { en: "[", enShift: "{", th: "บ", thShift: "ฐ" },
+        { en: "]", enShift: "}", th: "ล", thShift: "," },
+        { en: "\\", enShift: "|", th: "ฃ", thShift: "ฅ" }
+    ],
+    [
+        { en: "Caps", enShift: "", th: "ล็อก", thShift: "", wide: true },
+        { en: "a", enShift: "A", th: "ฟ", thShift: "ฤ" },
+        { en: "s", enShift: "S", th: "ห", thShift: "ฆ" },
+        { en: "d", enShift: "D", th: "ก", thShift: "ฏ" },
+        { en: "f", enShift: "F", th: "ด", thShift: "โ" },
+        { en: "g", enShift: "G", th: "เ", thShift: "ฌ" },
+        { en: "h", enShift: "H", th: "้", thShift: "็" },
+        { en: "j", enShift: "J", th: "่", thShift: "๋" },
+        { en: "k", enShift: "K", th: "า", thShift: "ษ" },
+        { en: "l", enShift: "L", th: "ส", thShift: "ศ" },
+        { en: ";", enShift: ":", th: "ว", thShift: "ซ" },
+        { en: "'", enShift: "\"", th: "ง", thShift: "." },
+        { en: "Enter", enShift: "", th: "ตกลง", thShift: "", wide: true }
+    ],
+    [
+        { en: "Shift", enShift: "", th: "Shift", thShift: "", extraWide: true, modifier: true },
+        { en: "z", enShift: "Z", th: "ผ", thShift: "(" },
+        { en: "x", enShift: "X", th: "ป", thShift: ")" },
+        { en: "c", enShift: "C", th: "แ", thShift: "ฉ" },
+        { en: "v", enShift: "V", th: "อ", thShift: "ฮ" },
+        { en: "b", enShift: "B", th: "ิ", thShift: "ฺ" },
+        { en: "n", enShift: "N", th: "ื", thShift: "์" },
+        { en: "m", enShift: "M", th: "ท", thShift: "ธ" },
+        { en: ",", enShift: "<", th: "ม", thShift: "ฒ" },
+        { en: ".", enShift: ">", th: "ใ", thShift: "ฬ" },
+        { en: "/", enShift: "?", th: "ฝ", thShift: "ฦ" },
+        { en: "Shift", enShift: "", th: "Shift", thShift: "", extraWide: true, modifier: true }
+    ],
+    [
+        { en: "Ctrl", enShift: "", th: "Ctrl", thShift: "", wide: true },
+        { en: "Alt", enShift: "", th: "Alt", thShift: "", wide: true },
+        { en: "Space", enShift: "", th: "เว้นวรรค", thShift: "", spacebar: true },
+        { en: "Alt", enShift: "", th: "Alt", thShift: "", wide: true },
+        { en: "Ctrl", enShift: "", th: "Ctrl", thShift: "", wide: true }
+    ]
+];
+
+const keyElements = new Map();
+
+function renderKeyboard() {
+    keyboardEl.innerHTML = "";
+
+    keyboardRows.forEach(row => {
+        const rowEl = document.createElement("div");
+        rowEl.className = "keyboard-row";
+
+        row.forEach(key => {
+            const keyEl = document.createElement("div");
+            keyEl.className = "key";
+            keyEl.dataset.en = key.en;
+            keyEl.dataset.enShift = key.enShift;
+            keyEl.dataset.th = key.th;
+            keyEl.dataset.thShift = key.thShift;
+
+            if (key.wide) keyEl.classList.add("wide");
+            if (key.extraWide) keyEl.classList.add("extra-wide");
+            if (key.spacebar) keyEl.classList.add("spacebar");
+            if (key.modifier) keyEl.classList.add("modifier");
+
+            const enLabel = document.createElement("span");
+            enLabel.className = "key-en";
+            enLabel.textContent = key.en;
+
+            const thLabel = document.createElement("span");
+            thLabel.className = "key-th";
+            thLabel.textContent = key.th;
+
+            keyEl.append(enLabel, thLabel);
+            rowEl.appendChild(keyEl);
+
+            if (!keyElements.has(key.en)) {
+                keyElements.set(key.en, []);
+            }
+            keyElements.get(key.en).push(keyEl);
+        });
+
+        keyboardEl.appendChild(rowEl);
+    });
+}
+
+function updateKeyboard() {
+    const nextCharacter = currentSentence[inputEl.value.length] || "";
+    const isThai = currentLanguage === "th";
+    let matchingKey = null;
+    let needsShift = false;
+
+    keyElements.forEach(elements => {
+        elements.forEach(keyEl => {
+            keyEl.classList.remove("active", "modifier-active");
+        });
+    });
+
+    if (nextCharacter === " ") {
+        matchingKey = "Space";
+    } else {
+        for (const row of keyboardRows) {
+            for (const key of row) {
+                const base = isThai ? key.th : key.en;
+                const shifted = isThai ? key.thShift : key.enShift;
+
+                if (base === nextCharacter) {
+                    matchingKey = key.en;
+                    break;
+                }
+                if (shifted && shifted === nextCharacter) {
+                    matchingKey = key.en;
+                    needsShift = true;
+                    break;
+                }
+            }
+            if (matchingKey) break;
+        }
+    }
+
+    if (matchingKey && keyElements.has(matchingKey)) {
+        keyElements.get(matchingKey)[0].classList.add("active");
+    }
+
+    if (needsShift) {
+        keyElements.get("Shift").forEach(keyEl => {
+            keyEl.classList.add("modifier-active");
+        });
+    }
+
+    if (!nextCharacter) {
+        keyboardHintEl.textContent = "พิมพ์ประโยคครบแล้ว";
+    } else if (!matchingKey) {
+        keyboardHintEl.textContent = `ตัวถัดไป: ${nextCharacter} · ไม่พบปุ่มในผังนี้`;
+    } else if (matchingKey === "Space") {
+        keyboardHintEl.textContent = "ตัวถัดไป: เว้นวรรค · กด Space";
+    } else {
+        const keyName = isThai
+            ? keyboardRows.flat().find(key => key.en === matchingKey)?.th
+            : matchingKey;
+        keyboardHintEl.textContent = `ตัวถัดไป: ${nextCharacter} · ${needsShift ? "Shift + " : ""}${keyName}`;
+    }
+}
+
+renderKeyboard();
+
+
+/* ======================================================
+   VOICE SYSTEM
+====================================================== */
+
+function loadVoices() {
+
+    voices = speechSynthesis.getVoices();
+
+    if (!voices.length) {
+        voiceNameEl.textContent = "🔊 System Voice";
+        return;
+    }
+
+    let preferred = null;
+
+    if (currentLanguage === "th") {
+
+        preferred =
+            voices.find(v =>
+                /th[-_]TH/i.test(v.lang) &&
+                /siri|google|premium|natural|enhanced/i.test(v.name)
+            )
+            ||
+            voices.find(v => /th[-_]TH/i.test(v.lang));
+
+    } else {
+
+        preferred =
+            voices.find(v =>
+                /^en[-_]US/i.test(v.lang) &&
+                /siri|samantha|google|premium|natural|enhanced/i.test(v.name)
+            )
+            ||
+            voices.find(v => /^en[-_]US/i.test(v.lang))
+            ||
+            voices.find(v => /^en/i.test(v.lang));
+    }
+
+    if (preferred) {
+        voiceNameEl.textContent =
+            `🔊 ${preferred.name}`;
+    } else {
+        voiceNameEl.textContent = "🔊 System Voice";
+    }
+}
+
+
+speechSynthesis.onvoiceschanged = loadVoices;
+
+loadVoices();
+
+
+function chooseVoice(lang) {
+
+    if (!voices.length) {
+        voices = speechSynthesis.getVoices();
+    }
+
+    if (!voices.length) return null;
+
+    let wanted = lang === "th"
+        ? voices.filter(v => /th[-_]TH/i.test(v.lang))
+        : voices.filter(v => /^en/i.test(v.lang));
+
+    if (wanted.length) {
+
+        const preferred =
+            wanted.find(v => /siri/i.test(v.name)) ||
+            wanted.find(v => /samantha/i.test(v.name)) ||
+            wanted.find(v => /google/i.test(v.name)) ||
+            wanted.find(v => /natural|premium|enhanced/i.test(v.name));
+
+        return preferred || wanted[0];
+    }
+
+    return voices[0];
+}
+
+
+function speakSentence() {
+
+    if (!("speechSynthesis" in window)) {
+
+        alert("เบราว์เซอร์นี้ไม่รองรับระบบเสียง Speech Synthesis");
+
+        return;
+    }
+
+    speechSynthesis.cancel();
+
+    const utterance =
+        new SpeechSynthesisUtterance(currentSentence);
+
+    const voice = chooseVoice(currentLanguage);
+
+    if (voice) {
+        utterance.voice = voice;
+    }
+
+    utterance.lang =
+        currentLanguage === "th"
+            ? "th-TH"
+            : "en-US";
+
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
+
+    voiceStatus.textContent =
+        "🔊 กำลังอ่านประโยค...";
+
+    utterance.onend = () => {
+
+        voiceStatus.textContent =
+            "✅ อ่านจบแล้ว · กดฟังซ้ำได้";
+
+    };
+
+    speechSynthesis.speak(utterance);
+}
+
+
+/* ======================================================
+   RANDOM SENTENCE
+====================================================== */
+
+function getRandomSentence() {
+
+    const pool =
+        sentences[currentLanguage][currentLevel];
+
+    const randomIndex =
+        Math.floor(Math.random() * pool.length);
+
+    return pool[randomIndex];
+}
+
+
+function newSentence(autoSpeak = true) {
+
+    clearInterval(timerInterval);
+
+    startTime = null;
+    completed = false;
+
+    totalTyped = 0;
+    totalCorrect = 0;
+    totalErrors = 0;
+
+    currentSentence = getRandomSentence();
+
+    renderSentence();
+
+    inputEl.value = "";
+    inputEl.disabled = false;
+
+    inputEl.focus();
+    updateKeyboard();
+
+    resultBox.classList.remove("show");
+
+    statusText.textContent = "พร้อมเริ่มฝึก";
+    statusDot.classList.remove("running");
+
+    voiceStatus.textContent =
+        "กด 🔊 เพื่อฟังประโยค";
+
+    updateStats();
+
+    loadVoices();
+
+    if (autoSpeak) {
+
+        setTimeout(() => {
+            speakSentence();
+        }, 300);
+
+    }
+
+}
+
+
+/* ======================================================
+   SENTENCE RENDER
+====================================================== */
+
+function renderSentence() {
+
+    sentenceEl.innerHTML = "";
+
+    [...currentSentence].forEach((char, index) => {
+
+        const span = document.createElement("span");
+
+        span.textContent = char;
+
+        if (index === 0) {
+            span.classList.add("current");
+        }
+
+        sentenceEl.appendChild(span);
+
+    });
+
+    updateKeyboard();
+
+}
+
+
+/* ======================================================
+   START TIMER
+====================================================== */
+
+function startTimer() {
+
+    if (startTime) return;
+
+    startTime = performance.now();
+
+    statusText.textContent = "กำลังพิมพ์...";
+    statusDot.classList.add("running");
+
+    timerInterval = setInterval(() => {
+
+        if (!startTime) return;
+
+        const elapsed =
+            (performance.now() - startTime) / 1000;
+
+        timerEl.textContent =
+            elapsed.toFixed(1);
+
+        updateWPM();
+
+    }, 100);
+
+}
+
+
+/* ======================================================
+   UPDATE TYPING
+====================================================== */
+
+function handleTyping() {
+
+    if (completed) return;
+
+    startTimer();
+
+    const typed = inputEl.value;
+
+    totalTyped = typed.length;
+
+    let errors = 0;
+    let correct = 0;
+
+    const spans = sentenceEl.querySelectorAll("span");
+
+    spans.forEach((span, index) => {
+
+        span.classList.remove(
+            "correct",
+            "incorrect",
+            "current"
+        );
+
+        if (index < typed.length) {
+
+            if (
+                typed[index] ===
+                currentSentence[index]
+            ) {
+
+                span.classList.add("correct");
+                correct++;
+
+            } else {
+
+                span.classList.add("incorrect");
+                errors++;
+
+            }
+
+        }
+
+        if (index === typed.length) {
+            span.classList.add("current");
+        }
+
+    });
+
+    totalCorrect = correct;
+    totalErrors = errors;
+
+    /* Prevent exceeding target */
+    if (typed.length > currentSentence.length) {
+
+        inputEl.value =
+            typed.substring(
+                0,
+                currentSentence.length
+            );
+
+        totalTyped =
+            currentSentence.length;
+    }
+
+            updateKeyboard();
+
+    updateStats();
+
+    if (
+        inputEl.value.length ===
+        currentSentence.length
+    ) {
+
+        finishTest();
+
+    }
+
+}
+
+
+/* ======================================================
+   STATS
+====================================================== */
+
+function getElapsedSeconds() {
+
+    if (!startTime) return 0;
+
+    return (
+        performance.now() -
+        startTime
+    ) / 1000;
+
+}
+
+
+function calculateWPM() {
+
+    const seconds = getElapsedSeconds();
+
+    if (!seconds || totalTyped === 0)
+        return 0;
+
+    /* Standard typing calculation:
+       5 characters = 1 word
+    */
+
+    const words = totalCorrect / 5;
+
+    return Math.round(
+        words / (seconds / 60)
+    );
+
+}
+
+
+function updateWPM() {
+
+    wpmEl.textContent =
+        calculateWPM();
+
+}
+
+
+function updateStats() {
+
+    const typed = inputEl.value.length;
+
+    const accuracy =
+        typed > 0
+            ? Math.round(
+                (totalCorrect / typed) * 100
+            )
+            : 100;
+
+    wpmEl.textContent =
+        calculateWPM();
+
+    accuracyEl.textContent =
+        `${accuracy}%`;
+
+    errorsEl.textContent =
+        totalErrors;
+
+    charsEl.textContent =
+        typed;
+
+    if (!startTime) {
+        timerEl.textContent = "0.0";
+    }
+
+}
+
+
+/* ======================================================
+   FINISH
+====================================================== */
+
+function finishTest() {
+
+    completed = true;
+
+    clearInterval(timerInterval);
+
+    const elapsed =
+        getElapsedSeconds();
+
+    const finalWpm =
+        calculateWPM();
+
+    const finalAccuracy =
+        currentSentence.length > 0
+            ? Math.round(
+                (totalCorrect /
+                    currentSentence.length) * 100
+            )
+            : 100;
+
+    inputEl.disabled = true;
+
+    statusDot.classList.remove("running");
+
+    statusText.textContent =
+        "พิมพ์สำเร็จแล้ว 🎉";
+
+    resultWpm.textContent =
+        finalWpm;
+
+    /* Message */
+
+    if (currentLevel === "hell") {
+
+        resultMessage.textContent =
+            "🔥 คุณรอดจาก HELL มาได้! ประโยคต่อไปอาจโหดกว่าเดิม";
+
+    } else if (finalAccuracy === 100) {
+
+        resultMessage.textContent =
+            "☕ Perfect! ไม่มีตัวอักษรผิดเลย";
+
+    } else if (finalAccuracy >= 95) {
+
+        resultMessage.textContent =
+            "✨ Excellent! ทั้งเร็วและแม่นมาก";
+
+    } else if (finalAccuracy >= 85) {
+
+        resultMessage.textContent =
+            "👏 Good job! ลองเพิ่มความเร็วอีกนิด";
+
+    } else {
+
+        resultMessage.textContent =
+            "💪 ฝึกอีกนิด ความแม่นจะดีขึ้นแน่นอน";
+
+    }
+
+    resultBox.classList.add("show");
+
+    saveBest(
+        finalWpm,
+        finalAccuracy
+    );
+
+}
+
+
+/* ======================================================
+   LOCAL STORAGE
+====================================================== */
+
+function loadBest() {
+
+    const bestWpm =
+        Number(
+            localStorage.getItem(
+                "cafeTypingBestWpm"
+            )
+        ) || 0;
+
+    const bestAccuracy =
+        Number(
+            localStorage.getItem(
+                "cafeTypingBestAccuracy"
+            )
+        ) || 0;
+
+    bestWpmEl.textContent =
+        bestWpm;
+
+    bestAccuracyEl.textContent =
+        `${bestAccuracy}%`;
+
+}
+
+
+function saveBest(wpm, accuracy) {
+
+    const currentBestWpm =
+        Number(
+            localStorage.getItem(
+                "cafeTypingBestWpm"
+            )
+        ) || 0;
+
+    const currentBestAccuracy =
+        Number(
+            localStorage.getItem(
+                "cafeTypingBestAccuracy"
+            )
+        ) || 0;
+
+    if (wpm > currentBestWpm) {
+
+        localStorage.setItem(
+            "cafeTypingBestWpm",
+            wpm
+        );
+
+        bestWpmEl.textContent =
+            wpm;
+    }
+
+    if (accuracy > currentBestAccuracy) {
+
+        localStorage.setItem(
+            "cafeTypingBestAccuracy",
+            accuracy
+        );
+
+        bestAccuracyEl.textContent =
+            `${accuracy}%`;
+    }
+
+}
+
+
+/* ======================================================
+   LANGUAGE CHANGE
+====================================================== */
+
+languageSelect.addEventListener(
+    "change",
+    () => {
+
+        currentLanguage =
+            languageSelect.value;
+
+        loadVoices();
+
+        newSentence(true);
+
+    }
+);
+
+
+/* ======================================================
+   LEVEL CHANGE
+====================================================== */
+
+levelSelect.addEventListener(
+    "change",
+    () => {
+
+        currentLevel =
+            levelSelect.value;
+
+        updateLevelButtons();
+
+        newSentence(true);
+
+    }
+);
+
+
+/* ======================================================
+   LEVEL BUTTONS
+====================================================== */
+
+document
+    .querySelectorAll(".level-btn")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                currentLevel =
+                    button.dataset.level;
+
+                levelSelect.value =
+                    currentLevel;
+
+                updateLevelButtons();
+
+                newSentence(true);
+
+            }
+        );
+
+    });
+
+
+function updateLevelButtons() {
+
+    document
+        .querySelectorAll(".level-btn")
+        .forEach(btn => {
+
+            btn.classList.toggle(
+                "active",
+                btn.dataset.level === currentLevel
+            );
+
+        });
+
+}
+
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+
+speakBtn.addEventListener(
+    "click",
+    speakSentence
+);
+
+repeatBtn.addEventListener(
+    "click",
+    speakSentence
+);
+
+newBtn.addEventListener(
+    "click",
+    () => newSentence(true)
+);
+
+nextBtn.addEventListener(
+    "click",
+    () => newSentence(true)
+);
+
+
+/* ======================================================
+   INPUT
+====================================================== */
+
+inputEl.addEventListener(
+    "input",
+    handleTyping
+);
+
+
+/* ======================================================
+   KEYBOARD SHORTCUTS
+====================================================== */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        /* Ctrl + R = repeat voice */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "r"
+        ) {
+
+            event.preventDefault();
+            speakSentence();
+
+        }
+
+        /* Ctrl + N = random */
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "n"
+        ) {
+
+            event.preventDefault();
+            newSentence(true);
+
+        }
+
+    }
+);
+
+
+/* ======================================================
+   INIT
+====================================================== */
+
+loadBest();
+
+newSentence(true);
+
+</script>
+
+</body>
+</html>
