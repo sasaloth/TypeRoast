@@ -83,7 +83,6 @@ h2{font-size:16px;margin:0 0 10px;font-weight:600}
 .col i{width:100%;max-width:34px;background:var(--acc);border-radius:4px 4px 0 0;min-height:2px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9;max-width:90vw;text-align:center}
 .toast.on{opacity:1}
-.version{text-align:center;color:var(--mute);font-size:12px;margin:12px 0}
 .set{display:flex;gap:18px;margin:-4px 0 12px;font-size:14px}.set[hidden]{display:none}.set input{vertical-align:middle;accent-color:var(--acc)}
 .steam{position:absolute;left:7px;top:-24px;display:flex;gap:6px;opacity:0}.cupw.hot .steam{opacity:1}.steam i{width:4px;height:16px;border-radius:4px;background:var(--mute);animation:stm 1.6s ease-in-out infinite}.steam i:nth-child(2){animation-delay:.4s}.steam i:nth-child(3){animation-delay:.8s}
 @keyframes stm{0%{transform:translateY(8px);opacity:0}50%{opacity:.55}100%{transform:translateY(-8px);opacity:0}}
@@ -93,6 +92,7 @@ h2{font-size:16px;margin:0 0 10px;font-weight:600}
 .box.cjk .ghost{position:static;opacity:1;height:auto;display:block;margin-top:14px;border:2px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:22px}.box.cjk .tap{display:none}
 .k{position:relative}.k .e{position:absolute;right:3px;bottom:1px;font-size:9px;opacity:.75}.k .s{position:absolute;right:3px;top:1px;font-size:10px;color:var(--acc)}.k.nx .s{color:inherit}
 body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.lw{background:var(--badbg);color:var(--bad);border-radius:8px;padding:8px 12px;font-size:14px;margin-bottom:10px}.lw[hidden]{display:none}.ver{text-align:center;color:var(--mute);font-size:12px;padding:8px 0 24px}
 @media(pointer:coarse){.kb{display:none}.tb,.pbtn,.pri{min-height:42px}.ls{min-height:46px}}
 @media(max-width:900px){.grid,.more{grid-template-columns:1fr}.kb{display:none}.main{order:-1}.ticket{padding:16px 16px 30px}.g4{grid-template-columns:repeat(2,1fr)}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -123,6 +123,7 @@ body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <button class="pbtn" id="br" data-i="rnd"></button>
 <button class="pbtn" id="bx" data-i="redo"></button></div>
 <div class="prog"><div class="cupw"><div class="steam"><i></i><i></i><i></i></div><div class="cup"><i id="cf"></i></div></div><span id="pt"></span></div>
+<div class="lw" id="lw" role="alert" hidden></div>
 <div class="box" id="box"><div class="text" id="txt"></div><div class="tap" data-i="tap"></div>
 <input class="ghost" id="in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="typing input"></div>
 <p class="hint" id="hint"></p>
@@ -135,8 +136,8 @@ body{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 <section><h2 data-i="ach"></h2><div class="ach" id="ac"></div></section>
 <section><h2 id="wk"></h2><div class="chart" id="ch"></div></section>
 </div>
-<footer class="version">v1.0.1</footer>
 </div>
+<footer class="ver">Type Roast v1.1.0 · 2026-11-01</footer>
 <div class="shr" id="shr" hidden><div class="in"><img id="shi" alt="share card"><p id="shp"></p><button class="pri" id="shc"></button></div></div>
 <div class="toast" id="toast"></div>
 
@@ -146,16 +147,9 @@ const $=s=>document.querySelector(s);
 const S={
 th:{lessons:'📚 บทเรียน',ach:'🏆 รางวัล',week:'📈 พัฒนาการ 7 วัน',listen:'🔊 ฟัง',rnd:'🎲 สุ่มโจทย์',redo:'↻ เริ่มใหม่',tap:'แตะหรือคลิกที่นี่แล้วเริ่มพิมพ์',hint:'เวลาเริ่มนับเมื่อคุณพิมพ์ตัวแรก · Esc = เริ่มใหม่',welcome:'ยินดีต้อนรับ เริ่มจากบทที่ 1 ได้เลย',done:'ชงเสร็จแล้ว!',next:'บทถัดไป',again:'ลองอีกครั้ง',locked:'พิมพ์บทก่อนหน้าให้แม่น 90% ขึ้นไปเพื่อปลดล็อก',acc:'แม่นยำ',err:'พิมพ์ผิด',sec:'วินาที',fail:'ต้องแม่น 90% ขึ้นไปจึงผ่านบทนี้',miss:'ตัวที่พลาดบ่อย: ',novoice:'เครื่องนี้ไม่มีเสียงภาษาไทย',unit:'CPM',ime:'โหมดนี้ใช้ IME ของระบบ สลับคีย์บอร์ดเป็นภาษานั้นก่อน พิมพ์ได้ตามปกติ ถ้าพิมพ์ผิดกด Backspace แก้ได้ และอย่าแปลงเป็นคันจิ/ตัวเลือกอื่นนอกจากข้อความที่โชว์',daily:'ออเดอร์ประจำวัน',weak:'ฝึกจุดอ่อน',noweak:'ยังไม่มีข้อมูลจุดอ่อน เล่นด่านสักรอบก่อนนะ',share:'📸 แชร์ผล',nb:'🏆 สถิติใหม่!',shp:'กดค้างที่รูป (หรือคลิกขวา) เพื่อบันทึก แล้วนำไปโพสต์ได้เลย',cl:'ปิด',brew:'ชงแล้ว',todayo:'ออเดอร์วันนี้',tag:'พิมพ์ให้ไวเหมือนบาริสต้า',order:'ออเดอร์ #',fill:'พิมพ์ต่อเพื่อเติมกาแฟให้เต็มแก้ว',newach:'ได้รางวัลใหม่: ',streak:'วันติดกัน'},
 en:{lessons:'📚 Lessons',ach:'🏆 Achievements',week:'📈 Last 7 days',listen:'🔊 Listen',rnd:'🎲 Shuffle',redo:'↻ Restart',tap:'Tap or click here, then start typing',hint:'The timer starts on your first key · Esc = restart',welcome:'Welcome. Start with lesson 1',done:'Order served!',next:'Next lesson',again:'Try again',locked:'Finish the previous lesson with 90% accuracy to unlock',acc:'accuracy',err:'errors',sec:'seconds',fail:'You need 90% accuracy to pass this lesson',miss:'Most missed: ',novoice:'No English voice found on this device',unit:'WPM',daily:'Daily order',weak:'Weak-key practice',noweak:'No weak keys yet. Play a lesson first',share:'📸 Share',nb:'🏆 New best!',shp:'Press and hold the image (or right-click) to save it, then post it anywhere',cl:'Close',brew:'Brewed',todayo:'orders today',tag:'Type as fast as a barista brews',order:'Order #',fill:'Keep typing to fill the cup',newach:'New achievement: ',streak:'day streak'}};
-S.th.abc='โหมดแป้น: สลับคีย์บอร์ดเป็นภาษาอังกฤษ (ABC) ก่อนพิมพ์';S.en.abc='Key mode: switch your keyboard to English (ABC) first';S.th.kh='โหมดแป้น: ใช้คีย์บอร์ดอังกฤษ (ABC) แล้วกดตามปุ่มที่ไฮไลต์ ไม่ต้องเปิด IME (กดปุ่มข้างเมนูภาษาเพื่อสลับเป็นโหมด IME)';
-S.th.kbd='ตัวอักษรที่พิมพ์ไม่ใช่ภาษาไทย ลองสลับแป้นพิมพ์เป็นภาษาไทยก่อนนะ';
-S.en.kbd='The typed characters do not look like English. Switch your keyboard to English and try again.';
-S.ko=Object.assign({},S.th);S.zh=Object.assign({},S.th);S.ja=Object.assign({},S.th);
-S.ko.kbd='입력한 문자가 한국어와 맞지 않는 것 같아요. 키보드 언어를 한국어로 바꾸고 다시 입력해 주세요.';
-S.zh.kbd='输入的字符似乎不是中文。请切换到中文输入法后再试。';
-S.ja.kbd='入力した文字が日本語と一致しないようです。日本語入力に切り替えてもう一度お試しください。';
-S.ko.kbdLatin='키 모드에서는 영어(ABC) 키보드를 사용해 주세요.';
-S.zh.kbdLatin='当前键盘模式需要使用英文（ABC）键盘，请切换后再试。';
-S.ja.kbdLatin='キー入力モードでは英語（ABC）キーボードを使ってください。';
+S.th.lwA='ตัวถัดไปเป็นภาษาอังกฤษ/ตัวเลข สลับแป้นเป็น English ก่อน (Win+Space หรือ Alt+Shift, Mac: Ctrl+Space)';S.th.lwT='ตัวถัดไปเป็นภาษา{n} สลับแป้นเป็นภาษา{n} ก่อน (Win+Space หรือ Alt+Shift, Mac: Ctrl+Space)';S.en.lwA='The next key is a Latin letter or digit. Switch your keyboard to English first (Win+Space or Alt+Shift, Mac: Ctrl+Space)';
+S.th.kh='โหมดแป้น: ใช้คีย์บอร์ดอังกฤษ (ABC) แล้วกดตามปุ่มที่ไฮไลต์ ไม่ต้องเปิด IME (กดปุ่มข้างเมนูภาษาเพื่อสลับเป็นโหมด IME)';
+S.ko=S.zh=S.ja=Object.assign({},S.th);
 const RANKS=[[0,'เด็กฝึกงาน','Rookie Barista'],[100,'บาริสต้า','Barista'],[300,'หัวหน้าบาร์','Head Barista'],[700,'เจ้าของร้าน','Café Owner']];
 const BASE=[
 {g:'Light Roast',t:['Finger Warm-up: แป้นเหย้า','Finger Warm-up'],w:{th:['ฟหกด','สวาหก','กดหฟ','ว่า','ด่า','สาว','ดาว','ฟาก','หา','กา','หก','ฟาด','วาด','สวด','กวาด','หวด','กด','ดก','ฟ่า','ห่า','ก่า','ส่า','ดา','สา'],en:['dad','sad','lad','flask','glass','fall','hall','salad','half','shall','add','ask','flag','slash','dash']}},
@@ -223,31 +217,15 @@ const MARK=/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/,CLU=/[\u0E31\u0E33-\u0E3A\u0E47-
 const D=()=>({lang:'th',ime:null,snd:true,vm:35,vk:50,dd:'',miss:{th:{},en:{}},xp:0,streak:0,last:'',best:{th:0,en:0},stars:{},total:0,days:{},served:{},ach:[],theme:''});
 let st=D();
 try{st=Object.assign(D(),JSON.parse(localStorage.getItem('tr1')||'{}'))}catch(e){}
-if(st.ime===null)st.ime=matchMedia('(pointer:coarse)').matches;
+const DESK=!matchMedia('(pointer:coarse)').matches; // keyboard-language warning is desktop only
+if(st.ime===null)st.ime=!DESK;
 const save=()=>{try{localStorage.setItem('tr1',JSON.stringify(st))}catch(e){}};
 const td=()=>new Date().toLocaleDateString('sv-SE');
 const ago=n=>new Date(Date.now()-864e5*n).toLocaleDateString('sv-SE');
 let comp=false,compStart=0,badIdx=new Set(),mode='',oi=0,agg={c:0,ok:0,e:0,s:0,m:{}},lang=st.lang,cur=0,text='',chars=[],cells=[],pos=0,errs=0,ok=0,t0=null,done=false,miss={};
-const L=()=>S[lang],key=i=>lang+i;let li=0,keyboardWarned=false;
+const L=()=>S[lang],key=i=>lang+i;let li=0;
 const unlocked=i=>i===0||(st.stars[key(i-1)]||0)>=1;
 function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2600)}
-function checkKeyboardLanguage(value,composing=false){
- if(composing)return;
- const latinExpected=lang==='en'||(CJK()&&!IME());
- const mismatch=Array.from(value).some(ch=>{
-  if(!/[\p{L}\p{M}]/u.test(ch))return false;
-  const latin=/\p{Script=Latin}/u.test(ch),thai=/\p{Script=Thai}/u.test(ch);
-  const hangul=/\p{Script=Hangul}/u.test(ch),han=/\p{Script=Han}/u.test(ch);
-  const kana=/[\p{Script=Hiragana}\p{Script=Katakana}]/u.test(ch);
-  if(lang==='th')return !thai;
-  if(latinExpected)return !latin;
-  if(lang==='ko')return !hangul;
-  if(lang==='zh')return !han;
-  return !(han||kana);
- });
- if(mismatch&&!keyboardWarned){toast(latinExpected&&CJK()?L().kbdLatin:L().kbd);keyboardWarned=true}
- else if(!mismatch)keyboardWarned=false;
-}
 
 const recent={};
 function dailyText(){const a=LS.slice(-3,-1).flatMap(l=>l.p[lang]);return a[[...td()].reduce((h,c)=>(h*31+c.charCodeAt(0))>>>0,7)%a.length]}
@@ -287,7 +265,7 @@ function load(fresh){
  if(mode==='daily')text=dailyText();
  else if(mode==='weak'){if(fresh||!text)text=weakText()||text}
  else if(fresh||!text){let n,g=0;do{n=pick(cur)}while(n===text&&g++<6);text=n}
- $('.cupw').classList.remove('hot');inp.value='';lastV='';comp=false;badIdx=new Set();
+ $('.cupw').classList.remove('hot');inp.value='';lastV='';comp=false;$('#lw').hidden=true;badIdx=new Set();
  const plan=keyPlan(text);chars=plan?plan.keys:Array.from(text);pos=0;errs=0;ok=0;t0=null;done=false;miss={};
  document.body.classList.remove('typing');$('#res').hidden=true;
  const cl=plan?plan.cl:[];if(!plan)chars.forEach((c,k)=>{if(CLU.test(c)&&cl.length)cl[cl.length-1].s+=c,cl[cl.length-1].n++;else cl.push({s:c,a:k,n:1})});
@@ -309,6 +287,7 @@ function imeInput(){
  if(done||(!mode&&!unlocked(cur))){inp.value='';return}
  if(t0===null){t0=performance.now();document.body.classList.add('typing')}
  const ty=Array.from(inp.value.normalize('NFC')),lim=comp?Math.min(compStart,ty.length):ty.length;
+ if(!comp&&ty.length)lwCheck(ty[ty.length-1],chars[ty.length-1]);
  for(let i=0;i<lim&&i<chars.length;i++)if(ty[i]!==chars[i]&&!badIdx.has(i)){badIdx.add(i);errs++;miss[chars[i]]=(miss[chars[i]]||0)+1;click(1)}
  let k=0;while(k<lim&&ty[k]===chars[k])k++;
  if(k>pos)click(0);pos=k;
@@ -317,16 +296,24 @@ function imeInput(){
  $('#pt').textContent=comp?'… '+ty.slice(lim).join(''):p+'% · '+L().err+' '+errs;
  if(ty.join('')===chars.join('')){ok=chars.length;pos=chars.length;finish()}
 }
+const NM={th:'ไทย',ko:'เกาหลี',ja:'ญี่ปุ่น',zh:'จีน',en:'English'};
+function lwCheck(ch,ex){
+ if(!DESK||!ex||ch===' '||ex===' ')return;
+ const a=c=>c.charCodeAt(0)<128,w=$('#lw');
+ if(a(ch)===a(ex)){w.hidden=true;return}
+ w.textContent=a(ex)?L().lwA:L().lwT.replace(/\{n\}/g,NM[lang]);w.hidden=false;
+}
 function press(ch){
  if(done||(!mode&&!unlocked(cur)))return;
  if(t0===null){t0=performance.now();document.body.classList.add('typing')}
+ lwCheck(ch,chars[pos]);
  if(ch===chars[pos]){pos++;ok++;click(0);if(pos>=chars.length){finish();return}}
  else{errs++;click(1);miss[chars[pos]]=(miss[chars[pos]]||0)+1;const c=cells.find(c=>pos>=c.a&&pos<c.a+c.n);if(c){c.el.classList.add('bad');setTimeout(()=>c.el.classList.remove('bad'),280)}}
  if(ch===chars[pos-1]&&pos<=chars.length)paint();
  else $('#pt').textContent=Math.round(pos/chars.length*100)+'% · '+L().err+' '+errs;
 }
 function finish(){
- done=true;paint();document.body.classList.remove('typing');
+ done=true;paint();$('#lw').hidden=true;document.body.classList.remove('typing');
  agg.c+=chars.length;agg.ok+=ok;agg.e+=errs;agg.s+=Math.max((performance.now()-t0)/1000,.3);
  for(const k in miss)agg.m[k]=(agg.m[k]||0)+miss[k];
  if(oi+1<nOrd()){const c0=cur,o0=oi;oi++;st.total++;st.served[td()]=(st.served[td()]||0)+1;save();renderStats();setTimeout(()=>{if(cur===c0&&oi===o0+1)load(true)},500);return}
@@ -399,7 +386,7 @@ function applyLang(){
  $('#bmd').hidden=!CJK();$('#bmd').textContent=st.ime?'🈶 IME':'⌨️ แป้น';$('#box').classList.toggle('cjk',IME());
  renderKb();renderAll();
 }
-function setLang(l){keyboardWarned=false;lang=st.lang=l;cur=0;save();text='';useLS();applyLang();start(cur,true)}
+function setLang(l){lang=st.lang=l;cur=0;save();text='';useLS();applyLang();start(cur,true)}
 $('#lg').onchange=e=>setLang(e.target.value);
 $('#bd').onclick=startDaily;$('#bw').onclick=startWeak;$('#shc').onclick=()=>$('#shr').hidden=true;
 $('#bset').onclick=()=>{$('#set').hidden=!$('#set').hidden};
@@ -427,13 +414,13 @@ const bgm=$('#bgm');bgm.volume=st.vm/100;
 $('#bmu').onclick=()=>{const b=$('#bmu');if(bgm.paused){bgm.play().then(()=>b.classList.add('on')).catch(()=>toast('🎵 ❌'))}else{bgm.pause();b.classList.remove('on')}$('#in').focus()};
 if(st.theme)document.documentElement.dataset.theme=st.theme;
 const inp=$('#in'),box=$('#box');
-$('#bmd').onclick=()=>{st.ime=!st.ime;keyboardWarned=false;save();applyLang();start(cur,true)};
+$('#bmd').onclick=()=>{st.ime=!st.ime;save();applyLang();start(cur,true)};
 let lastV='';
 // phone keyboards (Gboard/iOS) type inside a composing word, so press only the newly added chars
 const take=()=>{const v=inp.value;if(v.length>lastV.length&&v.startsWith(lastV))for(const ch of v.slice(lastV.length))press(ch);lastV=v},reset=()=>{inp.value='';lastV=''};
-inp.addEventListener('input',e=>{checkKeyboardLanguage(inp.value,e.isComposing||comp);if(IME())imeInput();else{take();if(!e.isComposing)reset()}});
+inp.addEventListener('input',e=>{if(IME())imeInput();else{take();if(!e.isComposing)reset()}});
 inp.addEventListener('compositionstart',()=>{if(IME()){comp=true;compStart=Array.from(inp.value.normalize('NFC')).length}});
-inp.addEventListener('compositionend',()=>{checkKeyboardLanguage(inp.value);if(IME()){comp=false;imeInput()}else{take();reset()}});
+inp.addEventListener('compositionend',()=>{if(IME()){comp=false;imeInput()}else{take();reset()}});
 inp.addEventListener('focus',()=>setTimeout(()=>$('.ticket').scrollIntoView({block:'start',behavior:'smooth'}),350));
 document.addEventListener('pointerdown',()=>{try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}},{once:true});
 inp.addEventListener('focus',()=>box.classList.add('f'));
